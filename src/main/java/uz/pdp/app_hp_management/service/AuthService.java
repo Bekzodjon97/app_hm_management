@@ -48,7 +48,7 @@ public class AuthService implements UserDetailsService {
         if (existsByEmail)
             return new ApiResponse("Bunday email ro'yxatga olib bo'lingan", false);
         User userInSystem = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (userInSystem.getRoles().contains(1)){
+        if (userInSystem.getRoles().contains(RoleName.DIRECTOR)){
             User user=new User();
             user.setLastName(registerDto.getLastName());
             user.setFirstName(registerDto.getFirstName());
@@ -65,7 +65,7 @@ public class AuthService implements UserDetailsService {
 
             return new ApiResponse("Hodim ro'yxatga olindi. Akkaunt aktivlashishi uchun email yuborilga link orqali kirishi va o'z parolini o'rnatishi kerak bo'ladi",true);
 
-        }else if (userInSystem.getRoles().contains(2)){
+        }else if (userInSystem.getRoles().contains(RoleName.MANAGER)){
             if (registerDto.getRolesId().contains(2)) {
                 return new ApiResponse("Kechirasiz siz manager qo'sha olmaysiz",false);
             }

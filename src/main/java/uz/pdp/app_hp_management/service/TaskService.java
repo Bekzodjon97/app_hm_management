@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import uz.pdp.app_hp_management.entity.Role;
 import uz.pdp.app_hp_management.entity.Task;
 import uz.pdp.app_hp_management.entity.User;
+import uz.pdp.app_hp_management.entity.enums.RoleName;
 import uz.pdp.app_hp_management.entity.enums.StatusTask;
 import uz.pdp.app_hp_management.payload.ApiResponse;
 import uz.pdp.app_hp_management.payload.TaskDto;
@@ -33,7 +34,7 @@ public class TaskService {
         if (!optionalUser.isPresent())
             return new ApiResponse("Bunday hodim yo'q", false);
         User userInSystem = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (userInSystem.getRoles().contains(1)){
+        if (userInSystem.getRoles().contains(RoleName.DIRECTOR)){
             Task task=new Task();
             task.setStatusTask(StatusTask.NEW);
             task.setDescription(taskDto.getDescription());
@@ -48,7 +49,7 @@ public class TaskService {
 
             return new ApiResponse("Vazifa hodimga yuborildi.",true);
 
-        }else if (userInSystem.getRoles().contains(2)){
+        }else if (userInSystem.getRoles().contains(RoleName.MANAGER)){
             if (optionalUser.get().getRoles().contains(2)) {
                 return new ApiResponse("Kechirasiz siz manager vazifa bera olmaysiz",false);
             }
